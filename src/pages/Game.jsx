@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Header from '../components/Header';
 
 class Game extends Component {
   render() {
@@ -7,6 +8,7 @@ class Game extends Component {
 
     return (
       <section>
+        <Header />
         <h1>Game</h1>
         <button onClick={ () => history.push('/') }>Login</button>
       </section>

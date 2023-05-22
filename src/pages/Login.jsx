@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
 import { getTokenAPI } from '../services/API';
 import '../styles/login.css';
+import { startGame } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -26,10 +28,12 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
 
     const tokenObj = await getTokenAPI();
     localStorage.setItem('token', tokenObj.token);
+
+    dispatch(startGame(this.state));
 
     history.push('/game');
   }
@@ -106,4 +110,4 @@ Login.propTypes = {
   }),
 }.isRequired;
 
-export default Login;
+export default connect()(Login);
