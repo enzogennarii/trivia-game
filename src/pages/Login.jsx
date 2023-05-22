@@ -29,7 +29,6 @@ class Login extends Component {
     const { history } = this.props;
 
     const tokenObj = await getTokenAPI();
-    console.log(tokenObj);
     localStorage.setItem('token', tokenObj.token);
 
     history.push('/game');
