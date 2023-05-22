@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import { getTokenAPI } from '../services/API';
 import '../styles/login.css';
 
 class Login extends Component {
@@ -22,8 +25,13 @@ class Login extends Component {
     }, this.isBtnDisabled);
   }
 
-  handleClick() {
-    console.log('Submit');
+  async handleClick() {
+    const { history } = this.props;
+
+    const tokenObj = await getTokenAPI();
+    localStorage.setItem('token', tokenObj.token);
+
+    history.push('/game');
   }
 
   isBtnDisabled() {
@@ -41,6 +49,7 @@ class Login extends Component {
 
   render() {
     const { playerName, playerEmail, isBtnDisabled } = this.state;
+    const { history } = this.props;
 
     return (
       <section className="login-container">
@@ -77,10 +86,24 @@ class Login extends Component {
           >
             Play
           </button>
+
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/settings') }
+          >
+            Configurações
+          </button>
         </form>
       </section>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+}.isRequired;
 
 export default Login;

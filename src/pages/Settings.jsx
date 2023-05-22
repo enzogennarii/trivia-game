@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class Game extends Component {
+class Settings extends Component {
   render() {
     const { history } = this.props;
 
     return (
       <section>
-        <h1>Game</h1>
+        <h1 data-testid="settings-title">Configurações</h1>
         <button onClick={ () => history.push('/') }>Login</button>
       </section>
     );
   }
 }
 
-Game.propTypes = {
+Settings.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
 }.isRequired;
 
-export default Game;
+export default Settings;
