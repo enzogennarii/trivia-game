@@ -50,6 +50,7 @@ class Login extends Component {
 
   render() {
     const { playerName, playerEmail, isBtnDisabled } = this.state;
+    const { history } = this.props;
 
     return (
       <section className="login-container">
@@ -85,6 +86,14 @@ class Login extends Component {
             onClick={ this.handleClick }
           >
             Play
+          </button>
+
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/settings') }
+          >
+            Configurações
           </button>
         </form>
       </section>
