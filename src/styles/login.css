@@ -15,41 +15,20 @@
   box-shadow: 0 0 1rem 0 rgb(60, 2, 68, 1);
   display: flex;
   flex-direction: column;
-  height: 45%;
+  height: 50%;
   justify-content: center;
-  width: 35%;
-}
-
-.login h1 {
-  color: white;
-  font-size: 3rem;
-  font-weight: 900;
-  margin-bottom: 1rem;
-}
-
-.login h1:hover {
-  color: #f8e61d;
-}
-
-.login span {
-  color: #3cf5a8;
-  font-size: 3rem;
-  margin: 0;
-}
-
-.login span:hover {
-  color: #17c400;
-}
-
-.login h3 {
-  color: rgb(123, 239, 235);
+  width: 40%;
 }
 
 .login label {
   color: white;
-  font-size: rem;
-  font-weight: 300px;
-  margin-bottom: 2%;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.login label:hover {
+  color: #f8e61d;
 }
 
 .login input {
@@ -74,7 +53,7 @@
   font-size: 2rem;
   height: 12%;
   margin-bottom: 1rem;
-  width: 30%;
+  width: 50%;
 }
 
 .login button:hover {
