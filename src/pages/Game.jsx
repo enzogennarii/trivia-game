@@ -17,7 +17,6 @@ class Game extends Component {
 
   async componentDidMount() {
     const token = localStorage.getItem('token');
-    // const token = 'c9038e649eef74fbe31b811f397aad3249a62dd601atrybef00ff852a29bf2555555';
     const response = await getQuestionsAPI(token);
     const { history } = this.props;
     if (response.response_code !== 0) {
@@ -45,6 +44,7 @@ class Game extends Component {
 
   render() {
     const { history } = this.props;
+
     const { questions, currentQuestion, shuffledAnswers } = this.state;
     return (
       <section className="game-container">
@@ -55,19 +55,21 @@ class Game extends Component {
           ? <span>Carregando...</span>
           : (
             <section>
-              <p>
+              <p data-testid="question-category">
                 {`Categoria: ${currentQuestion.category}`}
               </p>
               <p>
                 {`Dificuldade: ${currentQuestion.difficulty}`}
               </p>
-              <p>
+              <p data-testid="question-text">
                 {`Pergunta: ${currentQuestion.question}`}
               </p>
-              {shuffledAnswers
-                .map((element, index) => (
-                  element === currentQuestion.correct_answer
-                    ? (
+
+              <div data-testid="answer-options">
+
+                {shuffledAnswers.map((element, index) => {
+                  if (element === currentQuestion.correct_answer) {
+                    return (
                       <button
                         data-testid="correct-answer"
                         onClick={ () => console.log(element) }
@@ -75,16 +77,19 @@ class Game extends Component {
                       >
                         {element}
                       </button>
-                    ) : (
-                      <button
-                        data-testid={ `wrong-answer-${index}` }
-                        onClick={ () => console.log(element) }
-                        key={ index }
-                      >
-                        {element}
-                      </button>
-                    )
-                ))}
+                    );
+                  }
+                  return (
+                    <button
+                      data-testid={ `wrong-answer-${index}` }
+                      onClick={ () => console.log(element) }
+                      key={ index }
+                    >
+                      {element}
+                    </button>
+                  );
+                })}
+              </div>
             </section>
           )}
       </section>
