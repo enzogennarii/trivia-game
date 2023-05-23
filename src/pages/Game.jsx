@@ -12,6 +12,10 @@ class Game extends Component {
       currentQuestionIndex: 0,
       questions: [],
       shuffledAnswers: [],
+      x: false,
+      // isAnswer: ,
+      // currectBtn: true,
+      // incorrectBtn: ,
     };
   }
 
@@ -32,6 +36,10 @@ class Game extends Component {
     }));
   }
 
+  handleAnswerClick = () => {
+    this.setState({ x: true });
+  };
+
   shuffle = (array) => {
     console.log('array', array);
     const shuffled = array
@@ -45,7 +53,7 @@ class Game extends Component {
   render() {
     const { history } = this.props;
 
-    const { questions, currentQuestion, shuffledAnswers } = this.state;
+    const { questions, currentQuestion, shuffledAnswers, x } = this.state;
     return (
       <section className="game-container">
         <Header />
@@ -71,8 +79,9 @@ class Game extends Component {
                   if (element === currentQuestion.correct_answer) {
                     return (
                       <button
+                        className={ x ? 'answer correct' : 'answer' }
                         data-testid="correct-answer"
-                        onClick={ () => console.log(element) }
+                        onClick={ this.handleAnswerClick }
                         key={ index }
                       >
                         {element}
@@ -81,8 +90,9 @@ class Game extends Component {
                   }
                   return (
                     <button
+                      className={ x ? 'answer incorrect' : 'answer' }
                       data-testid={ `wrong-answer-${index}` }
-                      onClick={ () => console.log(element) }
+                      onClick={ this.handleAnswerClick }
                       key={ index }
                     >
                       {element}
