@@ -44,6 +44,11 @@ class Feedback extends Component {
         />
         <p data-testid="header-player-name">{name}</p>
         <p data-testid="header-score">{score}</p>
+        <p data-testid="feedback-total-score">{score}</p>
+        <p data-testid="feedback-total-question">
+          {assertions}
+        </p>
+
       </section>
     );
   }
