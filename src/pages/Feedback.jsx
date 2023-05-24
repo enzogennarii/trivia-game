@@ -12,9 +12,35 @@ class Feedback extends Component {
     };
   }
 
-  componentDidMount() {
-    this.getPlayerInfo();
+  // ranking: [
+  //   { name: nome_da_pessoa, score: 10, picture: url_da_foto_no_gravatar }
+  // ]
+
+  async componentDidMount() {
+    await this.getPlayerInfo();
+    this.addPlayerOnRanking();
   }
+
+  addPlayerOnRanking = () => {
+    const { gravatarImg } = this.state;
+    const { name, score } = this.props;
+
+    console.log(gravatarImg, name, score);
+
+    if (localStorage.getItem('ranking')) {
+      const rank = localStorage.getItem('ranking');
+      const json = JSON.parse(rank);
+      // const nova = json.sort((a, b) => b.score - a.score);
+      // nova.unshift({ name, score, gravatarImg });
+
+      localStorage.setItem(
+        'ranking',
+        JSON.stringify(json.sort((a, b) => b.score - a.score)),
+      );
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([{ name, score, gravatarImg }]));
+    }
+  };
 
   getPlayerInfo = async () => {
     const { gravatarEmail } = this.props;
