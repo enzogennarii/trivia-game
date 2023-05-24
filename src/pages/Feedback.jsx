@@ -28,7 +28,7 @@ class Feedback extends Component {
 
   render() {
     const { gravatarImg } = this.state;
-    const { score, name, assertions } = this.props;
+    const { score, name, assertions, history } = this.props;
 
     return (
       <section className="feedback-page">
@@ -48,6 +48,14 @@ class Feedback extends Component {
         <p data-testid="feedback-total-question">
           {assertions}
         </p>
+
+        <button
+          data-testid="btn-play-again"
+          onClick={ () => history.push('/') }
+        >
+          Play Again
+
+        </button>
 
       </section>
     );
