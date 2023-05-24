@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
+
 import { getTokenAPI } from '../services/API';
-import '../styles/login.css';
 import { startGame } from '../redux/actions';
+import '../styles/login.css';
 
 class Login extends Component {
   constructor() {

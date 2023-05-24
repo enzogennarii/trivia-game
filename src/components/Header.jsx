@@ -5,7 +5,6 @@ import '../styles/Header.css';
 
 function Header() {
   const { email, name } = useSelector((state) => state.login);
-
   const hash = md5(email).toString();
   const gravatarImg = `https://www.gravatar.com/avatar/${hash}`;
 
@@ -18,9 +17,9 @@ function Header() {
           </span>
         </div>
         <img
-          className="header-img"
           src={ gravatarImg }
-          alt="deu ruim"
+          alt="Player Avatar"
+          className="header-img"
           data-testid="header-profile-picture"
         />
         <div>
