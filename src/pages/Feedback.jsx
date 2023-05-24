@@ -28,11 +28,15 @@ class Feedback extends Component {
 
   render() {
     const { gravatarImg } = this.state;
-    const { score, name } = this.props;
+    const { score, name, assertions } = this.props;
 
     return (
       <section className="feedback-page">
-        <p data-testid="feedback-text">Feedback</p>
+
+        <p data-testid="feedback-text">
+          {assertions <= 2 ? 'Could be better...' : 'Well Done!' }
+
+        </p>
         <img
           src={ gravatarImg }
           alt="avatar player"
@@ -49,10 +53,12 @@ const mapStateToProps = ({ player }) => ({
   score: player.score,
   gravatarEmail: player.gravatarEmail,
   name: player.name,
+  assertions: player.assertions,
 });
 
 Feedback.propTypes = {
   score: PropTypes.number,
+  assertions: PropTypes.number,
   gravatarEmail: PropTypes.string,
   name: PropTypes.string,
   history: PropTypes.shape({
