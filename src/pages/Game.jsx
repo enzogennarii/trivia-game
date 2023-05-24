@@ -50,6 +50,25 @@ class Game extends Component {
     }
   };
 
+  nextQuestion = () => {
+    const { questions, currentQuestionIndex } = this.state;
+    const limitIndex = 4;
+
+    if (currentQuestionIndex < limitIndex) {
+      this.setState({
+        isAnswered: false,
+        currentQuestion: questions[currentQuestionIndex + 1],
+        shuffledAnswers: this.shuffle([
+          questions[currentQuestionIndex + 1].correct_answer,
+          ...questions[currentQuestionIndex + 1].incorrect_answers]),
+        currentQuestionIndex: currentQuestionIndex + 1,
+      });
+    } else {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
+  };
+
   calcScoreQuestion(difficulty, time) {
     const defaultScore = 10;
     const hard = 3;
@@ -101,11 +120,11 @@ class Game extends Component {
     return (
       <section className="game-container">
         <Header />
-        <Timer
+        {/* <Timer
           isAnswered={ isAnswered }
           changeTimeRemaning={ this.changeTimeRemaning }
           handleAnswerClick={ this.handleAnswerClick }
-        />
+        /> */}
 
         <h1>Game</h1>
         <button onClick={ () => history.push('/') }>Login</button>
@@ -113,13 +132,13 @@ class Game extends Component {
         { questions.length === 0 ? <span>Carregando...</span> : (
           <section>
             <p data-testid="question-category">
-              {`Categoria: ${currentQuestion.category}`}
+              {currentQuestion.category}
             </p>
             <p data-testid="question-difficulty">
-              {`Dificuldade: ${currentQuestion.difficulty}`}
+              {currentQuestion.difficulty}
             </p>
             <p data-testid="question-text">
-              {`Pergunta: ${currentQuestion.question}`}
+              {currentQuestion.question}
             </p>
 
             <div data-testid="answer-options">
@@ -150,6 +169,21 @@ class Game extends Component {
                 );
               })}
             </div>
+            {isAnswered
+              ? (
+                <button
+                  data-testid="btn-next"
+                  onClick={ this.nextQuestion }
+                >
+                  Próximo
+                </button>
+              )
+              : (
+                <Timer
+                  isAnswered={ isAnswered }
+                  handleAnswerClick={ this.handleAnswerClick }
+                />
+              )}
           </section>
         )}
       </section>
