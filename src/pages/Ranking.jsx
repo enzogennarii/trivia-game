@@ -2,59 +2,52 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { restartGame } from '../redux/actions';
+
 class Ranking extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      ranking: JSON.parse(localStorage.getItem('ranking')),
+    };
+
+    this.handleRestartGame = this.handleRestartGame.bind(this);
+  }
+
+  // Função que reseta as informações e pontuações do jogador (evento para botão de jogar de novo)
+  handleRestartGame() {
+    const { dispatch, history } = this.props;
+    dispatch(restartGame());
+    history.push('/');
+  }
+
   render() {
-    const { history } = this.props;
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
-    const ordenedPlayers = ranking; // ranking.sort((a, b) => b.score - a.score);
-    console.log(ranking);
-    console.log(ordenedPlayers);
+    const { ranking } = this.state;
 
     return (
       <section className="ranking-page">
         <h1 data-testid="ranking-title">Ranking</h1>
 
         <table>
-          {
-            ordenedPlayers.map((player, index) => (
-              <tr key={ index }>
-                <td data-testid={ `player-name-${index}` }>
-                  {player.name}
-                </td>
-                <td data-testid={ `player-score-${index}` }>
-                  {player.score}
-                </td>
-                <td>
-                  <img src={ player.gravatarImg } alt="imagem" />
-                </td>
-              </tr>
-            ))
-          }
-
-        </table>
-
-        {/* {
-          ordenedPlayers.map((player, index) => (
-
-            <>
-              <p data-testid={ `player-name-${index}` }>
-
+          {ranking.map((player, index) => (
+            <tr key={ index }>
+              <td data-testid={ `player-name-${index}` }>
                 {player.name}
-              </p>
-              <p data-testid={ `player-score-${index}` }>
+              </td>
+              <td data-testid={ `player-score-${index}` }>
                 {player.score}
-              </p>
-              <p>
-                <img src={ player.gravatarImg } alt="imagem" />
-              </p>
-            </>
-
-          ))
-        } */}
+              </td>
+              <td>
+                <img src={ player.picture } alt="Avatar do jogador" />
+              </td>
+            </tr>
+          ))}
+        </table>
 
         <button
           data-testid="btn-go-home"
-          onClick={ () => history.push('/') }
+          onClick={ this.handleRestartGame }
         >
           Play Again
         </button>
@@ -64,18 +57,18 @@ class Ranking extends Component {
 }
 
 Ranking.propTypes = {
-  score: PropTypes.number,
   gravatarEmail: PropTypes.string,
   name: PropTypes.string,
+  score: PropTypes.number,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
 }.isRequired;
 
 const mapStateToProps = ({ player }) => ({
-  score: player.score,
   gravatarEmail: player.gravatarEmail,
   name: player.name,
+  score: player.score,
 });
 
 export default connect(mapStateToProps)(Ranking);

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 
+import { restartGame } from '../redux/actions';
+
 class Feedback extends Component {
   constructor() {
     super();
@@ -10,39 +12,26 @@ class Feedback extends Component {
     this.state = {
       gravatarImg: '',
     };
-  }
 
-  // ranking: [
-  //   { name: nome_da_pessoa, score: 10, picture: url_da_foto_no_gravatar }
-  // ]
+    this.addPlayerOnRanking = this.addPlayerOnRanking.bind(this);
+    this.getPlayerInfo = this.getPlayerInfo.bind(this);
+    this.handleRestartGame = this.handleRestartGame.bind(this);
+  }
 
   async componentDidMount() {
     await this.getPlayerInfo();
     this.addPlayerOnRanking();
   }
 
-  addPlayerOnRanking = () => {
-    const { gravatarImg } = this.state;
-    const { name, score } = this.props;
+  // Função que reseta as informações e pontuações do jogador (evento para botão de jogar de novo)
+  handleRestartGame() {
+    const { dispatch, history } = this.props;
+    dispatch(restartGame());
+    history.push('/');
+  }
 
-    console.log(gravatarImg, name, score);
-
-    if (localStorage.getItem('ranking')) {
-      const rank = localStorage.getItem('ranking');
-      const json = JSON.parse(rank);
-      // const nova = json.sort((a, b) => b.score - a.score);
-      // nova.unshift({ name, score, gravatarImg });
-
-      localStorage.setItem(
-        'ranking',
-        JSON.stringify(json.sort((a, b) => b.score - a.score)),
-      );
-    } else {
-      localStorage.setItem('ranking', JSON.stringify([{ name, score, gravatarImg }]));
-    }
-  };
-
-  getPlayerInfo = async () => {
+  // Função que transforma gravatarEmail (estado global) e converte para gravatarImg (estado local)
+  async getPlayerInfo() {
     const { gravatarEmail } = this.props;
     const hash = md5(gravatarEmail).toString();
     const gravatarImg = `https://www.gravatar.com/avatar/${hash}`;
@@ -50,7 +39,24 @@ class Feedback extends Component {
     this.setState({
       gravatarImg,
     });
-  };
+  }
+
+  // Função que adiciona o jogador na lista do ranking do localStorage
+  addPlayerOnRanking() {
+    const { gravatarImg } = this.state;
+    const { name, score } = this.props;
+
+    const playerObj = { name, score, picture: gravatarImg };
+
+    if (localStorage.getItem('ranking')) {
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      ranking.push(playerObj);
+      const sortedRanking = ranking.sort((a, b) => b.score - a.score);
+      localStorage.setItem('ranking', JSON.stringify(sortedRanking));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([playerObj]));
+    }
+  }
 
   render() {
     const { gravatarImg } = this.state;
@@ -58,26 +64,24 @@ class Feedback extends Component {
 
     return (
       <section className="feedback-page">
-
         <p data-testid="feedback-text">
           {assertions <= 2 ? 'Could be better...' : 'Well Done!' }
-
         </p>
+
         <img
           src={ gravatarImg }
           alt="avatar player"
           data-testid="header-profile-picture"
         />
+
         <p data-testid="header-player-name">{name}</p>
         <p data-testid="header-score">{score}</p>
         <p data-testid="feedback-total-score">{score}</p>
-        <p data-testid="feedback-total-question">
-          {assertions}
-        </p>
+        <p data-testid="feedback-total-question">{assertions}</p>
 
         <button
           data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
+          onClick={ this.handleRestartGame }
         >
           Play Again
         </button>
@@ -87,26 +91,24 @@ class Feedback extends Component {
           onClick={ () => history.push('/ranking') }
         >
           Ranking
-
         </button>
-
       </section>
     );
   }
 }
 
 const mapStateToProps = ({ player }) => ({
-  score: player.score,
+  assertions: player.assertions,
   gravatarEmail: player.gravatarEmail,
   name: player.name,
-  assertions: player.assertions,
+  score: player.score,
 });
 
 Feedback.propTypes = {
-  score: PropTypes.number,
   assertions: PropTypes.number,
   gravatarEmail: PropTypes.string,
   name: PropTypes.string,
+  score: PropTypes.number,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

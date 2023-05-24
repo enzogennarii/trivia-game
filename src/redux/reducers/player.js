@@ -1,4 +1,4 @@
-import { PLAYER_GOT_IT, START_GAME } from '../actions/index';
+import { START_GAME, PLAYER_GOT_IT, RESTART_GAME } from '../actions/index';
 
 const INITIAL_STATE = {
   name: '',
@@ -20,6 +20,8 @@ const player = (state = INITIAL_STATE, { type, payload }) => {
       score: state.score + payload,
       assertions: state.assertions + 1,
     };
+  case RESTART_GAME:
+    return INITIAL_STATE;
   default:
     return state;
   }
