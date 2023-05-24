@@ -4,9 +4,8 @@ import md5 from 'crypto-js/md5';
 import '../styles/Header.css';
 
 function Header() {
-  const { email, name } = useSelector((state) => state.login);
-  const { score } = useSelector((state) => state.player);
-  const hash = md5(email).toString();
+  const { score, gravatarEmail, name } = useSelector((state) => state.player);
+  const hash = md5(gravatarEmail).toString();
   const gravatarImg = `https://www.gravatar.com/avatar/${hash}`;
 
   return (
@@ -23,11 +22,6 @@ function Header() {
           className="header-img"
           data-testid="header-profile-picture"
         />
-        <div>
-          <span className="header-email" data-testid="header-player-email">
-            {email}
-          </span>
-        </div>
       </div>
       <div>
         <span className="header-score" data-testid="header-score">{ score }</span>

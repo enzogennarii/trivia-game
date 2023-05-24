@@ -18,7 +18,6 @@ class Game extends Component {
       questions: [],
       shuffledAnswers: [],
       isAnswered: false,
-      // timeRemaining: 30,
     };
 
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
@@ -42,11 +41,7 @@ class Game extends Component {
         const timeRemaining = document.querySelector('#time-remaining').innerText;
         const score = this.calcScoreQuestion(currentQuestion.difficulty, timeRemaining);
         dispatch(playerGotIt(score));
-      } else {
-        console.log('Errou!');
       }
-    } else {
-      console.log('Errou!');
     }
   };
 
@@ -120,11 +115,6 @@ class Game extends Component {
     return (
       <section className="game-container">
         <Header />
-        {/* <Timer
-          isAnswered={ isAnswered }
-          changeTimeRemaning={ this.changeTimeRemaning }
-          handleAnswerClick={ this.handleAnswerClick }
-        /> */}
 
         <h1>Game</h1>
         <button onClick={ () => history.push('/') }>Login</button>
