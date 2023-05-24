@@ -44,12 +44,10 @@ class Game extends Component {
   // };
 
   shuffle = (array) => {
-    console.log('array', array);
     const shuffled = array
       .map((value) => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
-    console.log('array2', shuffled);
     return shuffled;
   };
 
