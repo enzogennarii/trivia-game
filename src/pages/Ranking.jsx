@@ -11,7 +11,7 @@ class Ranking extends Component {
         <h1 data-testid="ranking-title">Ranking</h1>
 
         <button
-          data-testid="btn-play-again"
+          data-testid="btn-go-home"
           onClick={ () => history.push('/') }
         >
           Play Again
