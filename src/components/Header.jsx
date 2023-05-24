@@ -5,6 +5,7 @@ import '../styles/Header.css';
 
 function Header() {
   const { email, name } = useSelector((state) => state.login);
+  const { score } = useSelector((state) => state.player);
   const hash = md5(email).toString();
   const gravatarImg = `https://www.gravatar.com/avatar/${hash}`;
 
@@ -29,7 +30,7 @@ function Header() {
         </div>
       </div>
       <div>
-        <span className="header-score" data-testid="header-score">0</span>
+        <span className="header-score" data-testid="header-score">{ score }</span>
       </div>
     </div>
   );
