@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { getQuestionsAPI } from '../services/API';
 import '../styles/Game.css';
+import Timer from '../components/Timer';
 
 class Game extends Component {
   constructor() {
@@ -12,10 +13,8 @@ class Game extends Component {
       currentQuestionIndex: 0,
       questions: [],
       shuffledAnswers: [],
-      x: false,
-      // isAnswer: ,
-      // currectBtn: true,
-      // incorrectBtn: ,
+      isAnswered: false,
+      // timeRemainingWhenAnswered: 30,
     };
   }
 
@@ -37,8 +36,12 @@ class Game extends Component {
   }
 
   handleAnswerClick = () => {
-    this.setState({ x: true });
+    this.setState({ isAnswered: true });
   };
+
+  // changeTimeRemaning = (time) => {
+  //   this.setState({timeRemainingWhenAnswered: time});
+  // };
 
   shuffle = (array) => {
     console.log('array', array);
@@ -53,10 +56,15 @@ class Game extends Component {
   render() {
     const { history } = this.props;
 
-    const { questions, currentQuestion, shuffledAnswers, x } = this.state;
+    const { questions, currentQuestion, shuffledAnswers, isAnswered } = this.state;
     return (
       <section className="game-container">
         <Header />
+        <Timer
+          isAnswered={ isAnswered }
+          changeTimeRemaning={ this.changeTimeRemaning }
+          handleAnswerClick={ this.handleAnswerClick }
+        />
         <h1>Game</h1>
         <button onClick={ () => history.push('/') }>Login</button>
         { questions.length === 0
@@ -79,8 +87,9 @@ class Game extends Component {
                   if (element === currentQuestion.correct_answer) {
                     return (
                       <button
-                        className={ x ? 'answer correct' : 'answer' }
+                        className={ isAnswered ? 'answer correct' : 'answer' }
                         data-testid="correct-answer"
+                        disabled={ isAnswered }
                         onClick={ this.handleAnswerClick }
                         key={ index }
                       >
@@ -90,8 +99,9 @@ class Game extends Component {
                   }
                   return (
                     <button
-                      className={ x ? 'answer incorrect' : 'answer' }
+                      className={ isAnswered ? 'answer incorrect' : 'answer' }
                       data-testid={ `wrong-answer-${index}` }
+                      disabled={ isAnswered }
                       onClick={ this.handleAnswerClick }
                       key={ index }
                     >
