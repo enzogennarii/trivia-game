@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { getQuestionsAPI } from '../services/API';
+import { playerGotIt } from '../redux/actions';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
 import '../styles/Game.css';
@@ -36,10 +38,10 @@ class Game extends Component {
       const correctAnswer = currentQuestion.correct_answer;
       const answerClicked = e.target.innerText;
       if (correctAnswer === answerClicked) {
-        console.log('Acertou!');
+        const { dispatch } = this.props;
         const timeRemaining = document.querySelector('#time-remaining').innerText;
-        console.log(timeRemaining);
-        // dispatch(playerGotIt());
+        const score = this.calcScoreQuestion(currentQuestion.difficulty, timeRemaining);
+        dispatch(playerGotIt(score));
       } else {
         console.log('Errou!');
       }
@@ -47,6 +49,22 @@ class Game extends Component {
       console.log('Errou!');
     }
   };
+
+  calcScoreQuestion(difficulty, time) {
+    const defaultScore = 10;
+    const hard = 3;
+
+    switch (difficulty) {
+    case 'hard':
+      return (hard * Number(time)) + defaultScore;
+    case 'medium':
+      return (2 * Number(time)) + defaultScore;
+    case 'easy':
+      return Number(time) + defaultScore;
+    default:
+      return 0;
+    }
+  }
 
   // Função que salva no estado as questões vindas da API
   async updateStateWithQuestions() {
@@ -78,6 +96,7 @@ class Game extends Component {
   render() {
     const { currentQuestion, isAnswered, questions, shuffledAnswers } = this.state;
     const { history } = this.props;
+    console.log(currentQuestion.correct_answer);
 
     return (
       <section className="game-container">
@@ -144,4 +163,4 @@ Game.propTypes = {
   }),
 }.isRequired;
 
-export default Game;
+export default connect()(Game);
