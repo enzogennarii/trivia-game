@@ -15,13 +15,13 @@ class Game extends Component {
     this.state = {
       currentQuestion: {},
       currentQuestionIndex: 0,
+      isAnswered: false,
       questions: [],
       shuffledAnswers: [],
-      isAnswered: false,
-      // timeRemaining: 30,
     };
 
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
     this.shuffle = this.shuffle.bind(this);
     this.updateStateWithQuestions = this.updateStateWithQuestions.bind(this);
   }
@@ -42,33 +42,31 @@ class Game extends Component {
         const timeRemaining = document.querySelector('#time-remaining').innerText;
         const score = this.calcScoreQuestion(currentQuestion.difficulty, timeRemaining);
         dispatch(playerGotIt(score));
-      } else {
-        console.log('Errou!');
       }
-    } else {
-      console.log('Errou!');
     }
   };
 
-  nextQuestion = () => {
-    const { questions, currentQuestionIndex } = this.state;
+  // Função de clique do botão para passar para a próxima pergunta
+  nextQuestion() {
+    const { currentQuestionIndex, questions } = this.state;
     const limitIndex = 4;
 
     if (currentQuestionIndex < limitIndex) {
       this.setState({
-        isAnswered: false,
         currentQuestion: questions[currentQuestionIndex + 1],
+        currentQuestionIndex: currentQuestionIndex + 1,
+        isAnswered: false,
         shuffledAnswers: this.shuffle([
           questions[currentQuestionIndex + 1].correct_answer,
           ...questions[currentQuestionIndex + 1].incorrect_answers]),
-        currentQuestionIndex: currentQuestionIndex + 1,
       });
     } else {
       const { history } = this.props;
       history.push('/feedback');
     }
-  };
+  }
 
+  // Função que calcula a pontuação da questão acertada
   calcScoreQuestion(difficulty, time) {
     const defaultScore = 10;
     const hard = 3;
@@ -97,8 +95,8 @@ class Game extends Component {
     }
 
     this.setState((prev) => ({
-      questions: response.results,
       currentQuestion: response.results[prev.currentQuestionIndex],
+      questions: response.results,
       shuffledAnswers: this.shuffle([
         response.results[prev.currentQuestionIndex].correct_answer,
         ...response.results[prev.currentQuestionIndex].incorrect_answers]),
@@ -120,11 +118,6 @@ class Game extends Component {
     return (
       <section className="game-container">
         <Header />
-        {/* <Timer
-          isAnswered={ isAnswered }
-          changeTimeRemaning={ this.changeTimeRemaning }
-          handleAnswerClick={ this.handleAnswerClick }
-        /> */}
 
         <h1>Game</h1>
         <button onClick={ () => history.push('/') }>Login</button>

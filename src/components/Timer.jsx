@@ -50,20 +50,15 @@ class Timer extends Component {
 
   render() {
     const { seconds } = this.state;
-    // const { handleAnswerClick, isAnswered } = this.props;
     const finalCount = 10;
     return (
       <div>
-        { seconds === 0
-          ? <p>Tempo esgotado!</p>
-          : (
-            <p>
-              Time Remaining:
-              <span id="time-remaining">
-                {seconds < finalCount ? `0${seconds}` : seconds}
-              </span>
-            </p>
-          )}
+        <p>
+          Time Remaining:
+          <span id="time-remaining">
+            {seconds < finalCount ? `0${seconds}` : seconds}
+          </span>
+        </p>
       </div>
     );
   }
