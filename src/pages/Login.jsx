@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { getTokenAPI } from '../services/API';
 import { startGame } from '../redux/actions';
-import '../styles/login.css';
+import '../styles/Login.css';
 
 class Login extends Component {
   constructor() {
