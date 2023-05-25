@@ -23,6 +23,7 @@ function Header() {
           data-testid="header-profile-picture"
         />
       </div>
+      <h1>Trívia Game</h1>
       <div>
         <span className="header-score" data-testid="header-score">{ score }</span>
       </div>

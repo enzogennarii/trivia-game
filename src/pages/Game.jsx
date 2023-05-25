@@ -112,73 +112,73 @@ class Game extends Component {
 
   render() {
     const { currentQuestion, isAnswered, questions, shuffledAnswers } = this.state;
-    const { history } = this.props;
     console.log(currentQuestion.correct_answer);
 
     return (
-      <section className="game-container">
+      <section className="game-page">
         <Header />
-
-        <h1>Game</h1>
-        <button onClick={ () => history.push('/') }>Login</button>
-
-        { questions.length === 0 ? <span>Carregando...</span> : (
-          <section>
-            <p data-testid="question-category">
-              {currentQuestion.category}
-            </p>
-            <p data-testid="question-difficulty">
-              {currentQuestion.difficulty}
-            </p>
-            <p data-testid="question-text">
-              {currentQuestion.question}
-            </p>
-
-            <div data-testid="answer-options">
-              {shuffledAnswers.map((element, index) => {
-                if (element === currentQuestion.correct_answer) {
-                  return (
+        <section className="game-container">
+          { questions.length === 0 ? <span>Carregando...</span> : (
+            <div className="game">
+              <section className="question-container">
+                <p data-testid="question-category" className="question-category">
+                  {currentQuestion.category}
+                </p>
+                <p data-testid="question-difficulty" className="question-difficulty">
+                  {currentQuestion.difficulty}
+                </p>
+                <p data-testid="question-text" className="queststion-text">
+                  {currentQuestion.question}
+                </p>
+              </section>
+              <section className="answer-container">
+                <div data-testid="answer-options">
+                  {shuffledAnswers.map((element, index) => {
+                    if (element === currentQuestion.correct_answer) {
+                      return (
+                        <button
+                          className={ isAnswered ? 'answer correct' : 'answer' }
+                          data-testid="correct-answer"
+                          disabled={ isAnswered }
+                          onClick={ this.handleAnswerClick }
+                          key={ index }
+                        >
+                          {element}
+                        </button>
+                      );
+                    }
+                    return (
+                      <button
+                        className={ isAnswered ? 'answer incorrect' : 'answer' }
+                        data-testid={ `wrong-answer-${index}` }
+                        disabled={ isAnswered }
+                        onClick={ this.handleAnswerClick }
+                        key={ index }
+                      >
+                        {element}
+                      </button>
+                    );
+                  })}
+                </div>
+                {isAnswered
+                  ? (
                     <button
-                      className={ isAnswered ? 'answer correct' : 'answer' }
-                      data-testid="correct-answer"
-                      disabled={ isAnswered }
-                      onClick={ this.handleAnswerClick }
-                      key={ index }
+                      data-testid="btn-next"
+                      onClick={ this.nextQuestion }
                     >
-                      {element}
+                      Próximo
                     </button>
-                  );
-                }
-                return (
-                  <button
-                    className={ isAnswered ? 'answer incorrect' : 'answer' }
-                    data-testid={ `wrong-answer-${index}` }
-                    disabled={ isAnswered }
-                    onClick={ this.handleAnswerClick }
-                    key={ index }
-                  >
-                    {element}
-                  </button>
-                );
-              })}
+                  )
+                  : (
+                    <Timer
+                      isAnswered={ isAnswered }
+                      handleAnswerClick={ this.handleAnswerClick }
+                    />
+                  )}
+              </section>
             </div>
-            {isAnswered
-              ? (
-                <button
-                  data-testid="btn-next"
-                  onClick={ this.nextQuestion }
-                >
-                  Próximo
-                </button>
-              )
-              : (
-                <Timer
-                  isAnswered={ isAnswered }
-                  handleAnswerClick={ this.handleAnswerClick }
-                />
-              )}
-          </section>
-        )}
+          )}
+        </section>
       </section>
     );
   }

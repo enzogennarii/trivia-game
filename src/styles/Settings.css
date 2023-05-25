@@ -1,0 +1,33 @@
+button {
+  background-color: white;
+  border: none;
+  border-radius: 0.5rem;
+  color: #a332b3;
+  cursor: pointer;
+  font-size: 2rem;
+  height: 12%;
+  margin-bottom: 1rem;
+  width: 20%;
+}
+
+.settings-page {
+  align-items: center;
+  background-color: dimgray;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  width: 100%;
+}
+
+h1 {
+  align-self: center;
+  background-color: #00bcc9;
+  border-radius: 2rem;
+  box-shadow: 0 0 1rem 0 rgb(60, 2, 68, 1);
+  font-size: large;
+  font-weight: 800;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
